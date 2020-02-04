@@ -4,13 +4,13 @@ var burger = require('../models/burger.js');
 
 //creating routes 
 router.get('/', function (req, res){
-    res.redirect('/index');
+    res.redirect('/burgers');
 });
 
 //index
-router.get('/index', function(req, res){
+router.get('/burgers', function(req, res){
     burger.selectAll(function(data){
-        var hbsObj = { burgers: data};
+        var hbsObj = { burger_data: burgerData};
 
         res.render('index', hbsObj);
     });
@@ -18,15 +18,17 @@ router.get('/index', function(req, res){
 
 //newBurg
 router.post('/burger/create', function (req, res) {
-    burger.insertOne(req.body.burger_name, function() {
-      res.redirect('/index');
+    burger.create(req.body.burger_name, function(result) {
+        console.log(result);
+        res.redirect('/');
     });
   });
 
 //eating
-router.post('/burger/eat/:id', function(reqq, res){
-    burger.updateOne(req.params.id, function(){
-        res.redirect('/index');
+router.put('/burgers/:id', function(reqq, res){
+    burger.updateOne(req.params.id, function(result){
+        console.log(result);
+        res.sendStatus(200);
     });
 });
 
